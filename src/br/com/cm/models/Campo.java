@@ -114,4 +114,35 @@ public class Campo {
 	public void setMarcado(boolean marcado) {
 		this.marcado = marcado;
 	}
+
+	public boolean objetivoAlcancado() {
+		boolean desvendado = !this.minado && this.aberto;
+		boolean protegido = this.minado && this.marcado;
+
+		return desvendado || protegido;
+	}
+
+	public long minasNaVizinhanca() {
+		return this.vizinhos.stream().filter(v -> v.minado).count();
+	}
+
+	public void reiniciar() {
+		this.aberto = false;
+		this.marcado = false;
+		this.minado = false;
+	}
+
+	public String toString() {
+		if (this.marcado) {
+			return "x";
+		} else if (this.aberto && this.minado) {
+			return "*";
+		} else if (this.aberto && this.minasNaVizinhanca() > 0) {
+			return Long.toString(this.minasNaVizinhanca());
+		} else if (this.aberto) {
+			return "";
+		} else {
+			return "?";
+		}
+	}
 }
